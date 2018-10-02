@@ -60,7 +60,7 @@ class App extends Component {
                     list.map((image, i) => {
 
                         image = `https://farm${list[i].farm}.staticflickr.com/${list[i].server}/${list[i].id}_${list[i].secret}_m.jpg`;
-                        return images.push({ url: image, isHover: false, title: list[i].title, owner: list[i].owner });
+                        return images.push({ url: image, isHover: false, title: list[i].title, ownername: list[i].ownername, views: list[i].views });
 
                     });
                 }
@@ -111,11 +111,13 @@ class App extends Component {
                                                 src={image.url}
                                                 className='img' />
                                             <div className='overlay'>
-                                                <div className='title' style={styleTitle}></div>
                                                 <div className='subtitle' style={styleSubtitle}>
                                                     <div className='subtitleText'>{image.title}</div>
-                                                    <div className='subtitleOwner'>by {image.owner}</div>
+                                                    <div className='subtitleOwner'>by {image.ownername}</div>
+                                                    <div className='subtitleOwner glyphicon glyphicon-eye-open'>&nbsp;{image.views}</div>
+                                                    
                                                 </div>
+                                                
                                             </div>
                                         </div>
                                     </div>

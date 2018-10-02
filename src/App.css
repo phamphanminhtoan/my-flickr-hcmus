@@ -70,7 +70,7 @@ html,body {
   font-size: 15px;
   color: white;
   position: absolute;
-  top: 47%;
+  top: 25%;
   left: 50%;
 }
 .subtitleText {
@@ -80,9 +80,7 @@ html,body {
   
 }
 .subtitleOwner {
-  
   font-size: 13px;
-  
   position: relative;
   left: -50%;
   padding: 5px 5px;
