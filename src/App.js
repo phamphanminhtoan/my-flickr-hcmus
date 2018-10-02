@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import InfiniteScroll from 'react-infinite-scroller';
 import axios from 'axios';
+import * as config from './config';
 import { Motion, spring } from 'react-motion'
 
 
@@ -46,7 +47,7 @@ class App extends Component {
 
     loadImages(page) {
         var list = [];
-        axios.get('https://api.flickr.com/services/rest/?method=flickr.interestingness.getList&api_key=210faf4ab82b8d0fdd0e13dc09080003&format=json&nojsoncallback=1&auth_token=72157698738355482-0e007dc50eece94b&api_sig=da46d154ba3ce0bdac84ead085774061')
+        axios.get(config.API_URL)
             .then(res => {
                 this.setState({
                     api: res.data.photos.photo
