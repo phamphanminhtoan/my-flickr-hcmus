@@ -3,8 +3,8 @@ import './App.css';
 import InfiniteScroll from 'react-infinite-scroller';
 import axios from 'axios';
 import * as config from './config';
-import { Motion, spring } from 'react-motion'
-
+import { Motion, spring } from 'react-motion';
+import Gallery from 'react-grid-gallery';
 
 class App extends Component {
     constructor(props) {
@@ -58,9 +58,15 @@ class App extends Component {
                     list = this.state.api.slice(Number(this.state.hasMore), Number(this.state.hasMore + 10))
 
                     list.map((image, i) => {
-
-                        image = `https://farm${list[i].farm}.staticflickr.com/${list[i].server}/${list[i].id}_${list[i].secret}_m.jpg`;
-                        return images.push({ url: image, isHover: false, title: list[i].title, ownername: list[i].ownername, views: list[i].views });
+                        image = {
+                            src: list[i].url_l,
+                            thumbnail: list[i].url_s,
+                            thumbnailWidth: list[i].width_s,
+                            thumbnailHeight: list[i].height_s,
+                            caption: list[i].title,
+                            info: { owner: list[i].ownername, views: list[i].views },
+                        };
+                        return images.push(image);
 
                     });
                 }
@@ -83,72 +89,72 @@ class App extends Component {
             });
     }
     render() {
-        var items = [];
-        this.state.images.map((image, index) => {
-            return items.push(
-                <div className="col-xs-4 col-sm-4 col-md-4 col-lg-4" key={index}>
-                    <div className="thumbnail">
-                        <Motion {...this.getSpringProps(image.isHover)}>
-                            {tweenCollection => {
-                                let styleImage = {
-                                    transform: 'scale(' + tweenCollection.scale + ')',
-                                    opacity: tweenCollection.imageOpacity,
-                                };
-                                let styleTitle = {
-                                    marginTop: tweenCollection.marginTop + '%',
-                                };
-                                let styleSubtitle = {
-                                    opacity: tweenCollection.opacity,
-                                };
-                                return (
-                                    <div className='subcontainer'>
-                                        <div
-                                            className='containerImage'
-                                            onMouseOver={this.handleHover.bind(null, true, index)}
-                                            onMouseOut={this.handleHover.bind(null, false, index)}>
-                                            <img
-                                                style={styleImage}
-                                                src={image.url}
-                                                // className='img'
-                                                 />
-                                            <div className='overlay'>
-                                                <div className='subtitle' style={styleSubtitle}>
-                                                    <div className='subtitleText'>{image.title}</div>
-                                                    <div className='subtitleOwner'>by {image.ownername}</div>
-                                                    <div className='subtitleOwner glyphicon glyphicon-eye-open'>&nbsp;{image.views}</div>
-                                                    
-                                                </div>
-                                                
-                                            </div>
-                                        </div>
-                                    </div>
-                                );
-                            }}
-                        </Motion>
-                        {/* <img src={image.url} alt="" /> */}
-                    </div>
+        var items = this.state.images.map(image => {
+            image.customOverlay = (
+                <div style={captionStyle}>
+                    <div>Title : {image.caption}</div>
+                    Owner : {image.info.owner}
+                    <br />
+                    Views : {image.info.views}
                 </div>
             );
+            console.log(image);
+            return image;
         });
         return (
             <div>
                 <div className="container">
-                
-                
+
+
                     <InfiniteScroll
                         pageStart={0}
                         loadMore={this.loadImages.bind(this)}
                         hasMore={this.state.show}
                         loader={<div className="loader" key={0}>Loading ...</div>}
                     >
-                        <div className="tracks col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                            {items}
+                        <div
+                            style={{
+                                display: 'block',
+                                minHeight: '1px',
+                                width: '100%',
+                                border: '1px solid #ddd',
+                            }}
+                        >
+                            <Gallery images={items} enableImageSelection={false} />
                         </div>
                     </InfiniteScroll>
                 </div>
-            </div>
+            </div >
         );
     }
 }
+
+//Style
+const captionStyle = {
+    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+    maxHeight: '240px',
+    overflow: 'hidden',
+    position: 'absolute',
+    bottom: '0',
+    width: '100%',
+    color: 'white',
+    padding: '2px',
+    fontSize: '90%',
+};
+
+const customTagStyle = {
+    wordWrap: 'break-word',
+    display: 'inline-block',
+    backgroundColor: 'white',
+    height: 'auto',
+    fontSize: '75%',
+    fontWeight: '600',
+    lineHeight: '1',
+    padding: '.2em .6em .3em',
+    borderRadius: '.25em',
+    color: 'black',
+    verticalAlign: 'baseline',
+    margin: '2px',
+};
 
 export default App;
