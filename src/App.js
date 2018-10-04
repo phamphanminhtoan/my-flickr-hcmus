@@ -109,7 +109,8 @@ class App extends Component {
                                             <img
                                                 style={styleImage}
                                                 src={image.url}
-                                                className='img' />
+                                                // className='img'
+                                                 />
                                             <div className='overlay'>
                                                 <div className='subtitle' style={styleSubtitle}>
                                                     <div className='subtitleText'>{image.title}</div>

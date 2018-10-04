@@ -93,7 +93,7 @@ html,body {
   height: 100%;
 }
 .img {
-  cursor: pointer;
-  position: relative;
-  vertical-align: middle;
+  /* cursor: pointer; */
+  /* position: relative; */
+  /* vertical-align: middle; */
 }
