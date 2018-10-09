@@ -19,7 +19,7 @@ class Tags extends Component {
 
     loadImages(page) {
         var list = [];
-        axios.get(`https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=19539947c0d64209e41f247168624053&tags=${this.props.search}&extras=tags%2C+url_s%2C+url_l%2C+owner_name%2C+views&format=json&nojsoncallback=1`)
+        axios.get(`https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=2424e5e2553925fe2b64d19b4f52ec3b&tags=${this.props.search}&extras=tags%2C+url_s%2C+url_l%2C+owner_name%2C+views&format=json&nojsoncallback=1`)
             .then(res => {
                 console.log(this.props.search);
                 this.setState({
