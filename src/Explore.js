@@ -22,7 +22,7 @@ class Explore extends Component {
                 this.setState({
                     api: res.data.photos.photo
                 });
-                
+
                 var images = [];
                 var total = this.state.api.length;
                 if (this.state.hasMore < total) {
@@ -32,8 +32,8 @@ class Explore extends Component {
                         image = {
                             src: list[i].url_l,
                             thumbnail: list[i].url_l,
-                            thumbnailWidth: parseInt(list[i].width_s, 10),
-                            thumbnailHeight: parseInt(list[i].height_s, 10),
+                            thumbnailWidth: list[i].width_l,
+                            thumbnailHeight: list[i].height_l,
                             caption: list[i].title,
                             info: { owner: list[i].ownername, views: list[i].views },
                         };
@@ -50,9 +50,9 @@ class Explore extends Component {
                     this.setState({
                         show: false
                     });
+                    console.log("err");
                     return;
                 }
-
             }).catch(err => {
                 console.log(err);
             });
@@ -67,6 +67,7 @@ class Explore extends Component {
                     Views : {image.info.views}
                 </div>
             );
+            
             return image;
         });
         return (
@@ -77,16 +78,9 @@ class Explore extends Component {
                     hasMore={this.state.show}
                     loader={<div className="loader" key={0}>Loading ...</div>}
                 >
-                    <div
-                        style={{
-                            display: 'block',
-                            minHeight: '1px',
-                            width: '100%',
-                            border: '1px solid #ddd',
-                        }}
-                    >
-                        <Gallery images={items} enableImageSelection={false} />
-                    </div>
+
+                    <Gallery images={items} enableImageSelection={false} />
+
                 </InfiniteScroll>
             </div>
         );

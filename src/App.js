@@ -1,72 +1,66 @@
 import React, { Component } from 'react';
 import './App.css';
-
 import Explore from './Explore';
-import Tags from './Tags';
+import TagsContainer from './containers/TagsContainer';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 
-class App extends Component {
 
-    constructor(props){
-        super(props);
-        this.state ={
-            search : ""
-        }
-    }
+const NavLink = ({ label, to, activeOnlyWhenExact }) => {
+    return (
+        <Route path={to} exact={activeOnlyWhenExact} children={({ match }) => {
+            var active = match ? 'active' : '';
+            return (
+                <li className={active}>
+                    <Link to={to}>{label}</Link>
+                </li>
+            )
+        }}
+        />
+    )
+}
+
+class App extends Component {
     _handleKeyPress = (e) => {
         if (e.key === 'Enter') {
             e.preventDefault();
-            
             this.setState({
                 search: e.target.value
             })
-            
+            var {searchKeys} = this.props;
+            searchKeys.search = e.target.value;
+            this.props._handleKeyPress(searchKeys);
         }
     }
-
-   
     render() {
-        
-        
         return (
             <div>
                 <Router>
                     <div>
                         <nav className="navbar navbar-inverse">
-                            <Link to='/' className="navbar-brand">My Flickr</Link>
                             <ul className="nav navbar-nav">
-                                <li className="active">
-                                    <Link to="/">Explore</Link>
-                                </li>
-                                <li>
-                                    <Link to="/tags">Tags</Link>
-                                </li>
-                               
+                                <NavLink label='Explore' to='/' activeOnlyWhenExact={true} />
+                                <NavLink label='Tags' to='/tags' activeOnlyWhenExact={false} />
                             </ul>
-
-
-
-                            
                             <form className="navbar-form navbar-left" role="search">
                                 <div className="form-group">
-                                    <input name="name"  type="text" className="form-control" placeholder="Search" onKeyPress={this._handleKeyPress} />
+                                    <input 
+                                        name="name" 
+                                        type="text" 
+                                        className="form-control" 
+                                        placeholder="Search" 
+                                        onKeyPress={this._handleKeyPress} />
                                 </div>
-                                
                             </form>
-                           
                         </nav>
                         <div>
                             <Route exact path="/" component={Explore} />
-                            <Route path="/tags" component={(match) => <Tags match = {match} search = {this.state.search}/>} />
-                            <Route path={`/tags/${this.state.search}`} component={(match) => <Tags match = {match} search = {this.state.search}/>} />
+                            <Route path="/tags" component={({ match, history }) => <TagsContainer match={match} history={history}/>} />
                         </div>
                     </div>
-
                 </Router>
             </div>
         );
     }
 }
-
 
 export default App;

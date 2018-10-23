@@ -1,0 +1,2 @@
+export const SEARCH_ACTION = 'SEARCH_ACTION';
+export const GET_SEARCH_KEY = 'GET_SEARCH_KEY';
